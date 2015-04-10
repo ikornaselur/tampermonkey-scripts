@@ -5,6 +5,7 @@
 // @description  Script from http://www.reddit.com/r/thebutton/comments/320p3v/color_changing_header/
 // @author       Axel Orn Sigurdsson
 // @match        http://www.reddit.com/r/thebutton
+// @match        http://www.reddit.com/r/thebutton/
 // @grant        none
 // ==/UserScript==
 
