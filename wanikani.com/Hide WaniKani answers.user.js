@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hide WaniKani answers 
 // @namespace    http://absalon.is
-// @version      0.1
+// @version      0.2
 // @description  Add a simple button to WaniKani level item list to hide naswers 
 // @author       Axel Örn Sigurðsson
 // @match        http://www.wanikani.com/level/*
@@ -10,10 +10,12 @@
 // ==/UserScript==
 
 (function($) {
-    console.log('swag');
     $(document).ready(function () {
+        /**
+         * Helper functions
+         */
         $.fn.invisible = function() {
-            if (!enabled) {
+            if (!answersShown) {
                 return;
             }
             return this.each(function() {
@@ -25,26 +27,59 @@
                 $(this).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 150);
             });
         };
-        var enabled = false;
-        var button = $('<button class="btn" style="margin: 0 0 10px 20px;">Toggle answers</button>');
-        button.on('click', function () {
-            enabled = !enabled;
-            if (!enabled) {
+        $.fn.shuffle = function(childElem) {
+            return this.each(function() {
+                var $this = $(this);
+                var elems = $this.children(childElem);
+
+                elems.sort(function() { return (Math.round(Math.random())-0.5); });
+
+                $this.detach(childElem);
+
+                for(var i=0; i < elems.length; i++)
+                    $this.append(elems[i]);
+
+            });
+        };
+        /**
+         * Toggle answers button
+         */
+        var answersShown = false;
+        var answersButton = $('<button class="btn" style="margin: 0 0 10px 20px;">Toggle answers</button>');
+        answersButton.on('click', function () {
+            answersShown = !answersShown;
+            if (!answersShown) {
                 $('.character-item > a > ul').visible();
             }
             else {
                 $('.character-item > a > ul').invisible();
             }
         });
-        button.insertAfter('.page-list');
+        answersButton.insertAfter('.page-list');
         $('.character-item').hover(function() {
-            if (enabled) {
+            if (answersShown) {
                 $('a > ul', this).visible();
             }
         }, function() {
-            if (enabled) {
+            if (answersShown) {
                 $('a > ul', this).invisible();
             }
         });
+
+        /**
+         * Shuffle cards
+         */
+        var shuffleButton = $('<Button class="btn" style="margin: 0 0 10px 20px;">Shuffle answers</button>');
+        var sections = $('section[id^=level-]');
+        shuffleButton.on('click', function () {
+            sections.each(function (_, el) {
+                $('ul', el).shuffle('li');
+            });
+        });
+        shuffleButton.insertAfter('.page-list');
+
+        /**
+         * Hide not learned
+         */
     });
 }(jQuery));
