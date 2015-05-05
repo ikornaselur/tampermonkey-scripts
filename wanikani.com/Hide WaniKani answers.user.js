@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Hide WaniKani answers 
 // @namespace    http://absalon.is
-// @version      0.2.1
-// @description  Add a simple button to WaniKani level item list to hide naswers 
+// @version      0.3.0
+// @description  Hide wanikani answers, shuffle the cards and remove not learned
 // @author       Axel Örn Sigurðsson
 // @match        http://www.wanikani.com/level/*
 // @exclude      http://www.wanikani.com/level/*/*
@@ -76,7 +76,7 @@
     /**
      * Shuffle cards
      */
-    var shuffleButton = $('<Button class="btn">Shuffle answers</button>');
+    var shuffleButton = $('<button class="btn">Shuffle answers</button>');
     var sections = $('section[id^=level-]')
     shuffleButton.on('click', function () {
       sections.each(function (_, el) {
@@ -86,7 +86,29 @@
     shuffleButton.appendTo(buttonGroup);
 
     /** 
-     * Hide not learned
+     * Toggle not learned
      */
+    var hideButton = $('<Button class="btn">Toggle not learned</button>');
+
+    var lockedRadicals = $('li.locked', 'section[id$=radicals]');
+    var lockedKanji = $('li.locked', 'section[id$=kanji]');
+    var lockedVocab = $('li.locked', 'section[id$=vocabulary]');
+
+    var notLearnedHidden = false;
+
+    hideButton.on('click', function () {
+      if (notLearnedHidden) {
+        // Add the locked elements back
+        $('ul[class$=grid]', 'section[id$=radicals]').append(lockedRadicals);
+        $('ul[class$=grid]', 'section[id$=kanji]').append(lockedKanji);
+        $('ul[class$=grid]', 'section[id$=vocabulary]').append(lockedVocab);
+      }
+      else {
+        // Remove all locked elements
+        $('li.locked').remove();
+      }
+      notLearnedHidden = !notLearnedHidden
+    });
+    hideButton.appendTo(buttonGroup);
   });
 }(jQuery));
