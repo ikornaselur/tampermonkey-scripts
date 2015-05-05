@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hide WaniKani answers 
 // @namespace    http://absalon.is
-// @version      0.3.0
+// @version      0.3.1
 // @description  Hide wanikani answers, shuffle the cards and remove not learned
 // @author       Axel Örn Sigurðsson
 // @match        http://www.wanikani.com/level/*
@@ -80,7 +80,7 @@
     var sections = $('section[id^=level-]')
     shuffleButton.on('click', function () {
       sections.each(function (_, el) {
-        $('ul', el).shuffle('li');
+        $('ul', el).shuffle('li.character-item');
       });
     });
     shuffleButton.appendTo(buttonGroup);
