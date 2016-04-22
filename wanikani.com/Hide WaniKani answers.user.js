@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Hide WaniKani answers 
 // @namespace    http://absalon.is
-// @version      0.3.1
+// @version      0.3.2
 // @description  Hide wanikani answers, shuffle the cards and remove not learned
 // @author       Axel Örn Sigurðsson
-// @match        http://www.wanikani.com/level/*
-// @exclude      http://www.wanikani.com/level/*/*
+// @match        https://www.wanikani.com/level/*
+// @exclude      https://www.wanikani.com/level/*/*
 // @grant        none
 // ==/UserScript==
 
